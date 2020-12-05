@@ -9,12 +9,14 @@ export class IngredientsStore {
     @observable ingredients: Ingredient[] = [];
 
     @action
+    setIngredients = (ingredients: Ingredient[]) => {
+        this.ingredients = ingredients;
+    }
+
     getIngredients = async () => {
-        // this.ingredients = [{id: 'asd', name: 'asd', image: 'asd', caloriesCount: 123}];
         try {
             const response = await getIngredients();
-            console.log({response})
-            this.ingredients = response.data;
+            this.setIngredients(response.data);
         } catch (e) {
             console.error(e);
         }

@@ -1,10 +1,11 @@
 import React from 'react';
+import {IngredientList} from "../components";
 
 
 export const IngredientsPage = () => {
     return (
         <div>
-            <h1>Ingredients page</h1>
+            <IngredientList/>
         </div>
     );
 }

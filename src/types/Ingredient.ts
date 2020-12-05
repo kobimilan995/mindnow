@@ -3,4 +3,5 @@ export interface Ingredient {
     name: string;
     image: string;
     caloriesCount: number;
+    tags: string[]
 }
