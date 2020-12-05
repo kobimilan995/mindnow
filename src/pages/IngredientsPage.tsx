@@ -4,7 +4,6 @@ import {IngredientList} from "../components";
 
 export const IngredientsPage = () => {
     const {tag} = useParams<{tag?: string}>();
-    console.log({tag});
     return (
         <div>
             <IngredientList selectedTag={tag}/>
