@@ -6,6 +6,7 @@ export class IngredientsStore {
     constructor() {
         makeObservable(this)
     }
+
     @observable ingredients: Ingredient[] = [];
 
     @action
@@ -13,13 +14,11 @@ export class IngredientsStore {
         this.ingredients = ingredients;
     }
 
-    getIngredients = async () => {
-        try {
-            const response = await getIngredients();
-            this.setIngredients(response.data);
-        } catch (e) {
-            console.error(e);
-        }
+    getIngredients = ({selectedTag}: { selectedTag?: string }) => {
+        getIngredients({selectedTag})
+            .then(response => {
+                this.setIngredients(response.data);
+            })
     }
 
     @action

@@ -13,7 +13,7 @@ const App = () => {
                     <Route path={HOME_PAGE_ROUTE} exact>
                         <HomePage/>
                     </Route>
-                    <Route path={INGREDIENTS_PAGE_ROUTE}>
+                    <Route path={`${INGREDIENTS_PAGE_ROUTE}/:tag?`}>
                         <IngredientsPage/>
                     </Route>
                 </Switch>

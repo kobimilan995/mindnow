@@ -3,13 +3,18 @@ import {IngredientListItem} from "./IngredientListItem";
 import {observer} from "mobx-react-lite";
 import {useRootStore} from "../contexts/RootStateContext";
 
-export const IngredientList = observer(() => {
+type Props = {
+    selectedTag?: string;
+}
+
+export const IngredientList = observer(({selectedTag}: Props) => {
     const {ingredientsStore} = useRootStore();
     const {ingredients, getIngredients} = ingredientsStore;
 
     useEffect(() => {
-        getIngredients();
-    }, [getIngredients]);
+        getIngredients({selectedTag});
+    }, [getIngredients, selectedTag]);
+
     return (
         <div className="container">
             <div className="row">

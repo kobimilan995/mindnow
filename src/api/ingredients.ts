@@ -4,6 +4,14 @@ import {Ingredient} from "../types/Ingredient";
 
 const route = 'ingredient';
 
-export const getIngredients = (): AxiosPromise<Ingredient[]> => {
-    return axios.get(`${ENDPOINT}${route}`)
+export const getIngredients = ({selectedTag}: {selectedTag?: string}): AxiosPromise<Ingredient[]> => {
+
+    const params: {[key: string]: string} = {};
+
+    if (selectedTag) {
+        params.tags = selectedTag;
+    }
+    return axios.get(`${ENDPOINT}${route}`, {
+        params
+    })
 }
