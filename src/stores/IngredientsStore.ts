@@ -1,6 +1,7 @@
 import {makeObservable, observable, action} from 'mobx';
 import {Ingredient} from "../types/Ingredient";
-import {getIngredients} from "../api/ingredients";
+import {getIngredients, GetIngredientsArgumentsType} from "../api/ingredients";
+import {SortingValuesType} from "../types/Sorting";
 
 export class IngredientsStore {
     constructor() {
@@ -8,14 +9,38 @@ export class IngredientsStore {
     }
 
     @observable ingredients: Ingredient[] = [];
+    @observable sortingValues: SortingValuesType = null;
+    @observable selectedTag: string | null = null;
 
     @action
     setIngredients = (ingredients: Ingredient[]) => {
         this.ingredients = ingredients;
     }
 
-    getIngredients = ({selectedTag}: { selectedTag?: string }) => {
-        getIngredients({selectedTag})
+    @action
+    setSortingValues = (sortingValues: SortingValuesType) => {
+        this.sortingValues = sortingValues;
+    }
+
+    @action
+    setSelectedTag = (selectedTag: string) => {
+        this.selectedTag = selectedTag;
+    }
+
+    getIngredients = () => {
+        const requestData: {[key: string]: string} = {};
+        const {selectedTag, sortingValues} = this;
+        if (selectedTag) {
+            requestData.tags = selectedTag;
+        }
+        if (sortingValues && sortingValues.sortBy) {
+            requestData.sortBy = sortingValues.sortBy;
+            if (sortingValues.sortOrder) {
+                requestData.order = sortingValues.sortOrder;
+            }
+        }
+        console.log(requestData);
+        getIngredients(requestData as GetIngredientsArgumentsType)
             .then(response => {
                 this.setIngredients(response.data);
             })

@@ -5,9 +5,10 @@ import {INGREDIENTS_PAGE_ROUTE} from "../constants/routes";
 
 type Props = {
     ingredient: Ingredient;
+    onTagSelect(tag: string): void;
 }
 
-export const IngredientListItem = ({ingredient}: Props) => {
+export const IngredientListItem = ({ingredient, onTagSelect}: Props) => {
     return (
         <div className="col-xs-12 col-md-4 col-sm-2 gray border-warning">
             <img className="card-img-top" src={ingredient.image} alt="''"/>
@@ -19,11 +20,12 @@ export const IngredientListItem = ({ingredient}: Props) => {
                         <h4>Tags</h4>
                         {ingredient.tags.map(tag => {
                             return (
-                                // prevent navigating if clicked tag is the same as selected tag
-                                <Link to={`${INGREDIENTS_PAGE_ROUTE}/${tag}`} key={tag}
-                                      className="badge badge-secondary mr-1">
+                                <a href="/#" key={tag} className="badge badge-secondary mr-1" onClick={(e) => {
+                                    e.preventDefault();
+                                    onTagSelect(tag);
+                                }}>
                                     {tag}
-                                </Link>
+                                </a>
                             );
                         })}
                     </div>

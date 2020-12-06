@@ -1,16 +1,17 @@
 import axios, {AxiosPromise} from 'axios';
 import {ENDPOINT} from "../constants/api";
 import {Ingredient} from "../types/Ingredient";
+import {SORT_ORDER_ASC, SORT_ORDER_DESC} from "../constants/sorting";
 
 const route = 'ingredient';
 
-export const getIngredients = ({selectedTag}: {selectedTag?: string}): AxiosPromise<Ingredient[]> => {
+export type GetIngredientsArgumentsType = {
+    tags?: string;
+    sortBy?: string;
+    order?: typeof SORT_ORDER_ASC | typeof SORT_ORDER_DESC;
+}
 
-    const params: {[key: string]: string} = {};
-
-    if (selectedTag) {
-        params.tags = selectedTag;
-    }
+export const getIngredients = (params: GetIngredientsArgumentsType): AxiosPromise<Ingredient[]> => {
     return axios.get(`${ENDPOINT}${route}`, {
         params
     })
