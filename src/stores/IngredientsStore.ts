@@ -1,7 +1,7 @@
 import {makeObservable, observable, action} from 'mobx';
 import {Ingredient} from "../types/Ingredient";
-import {getIngredients, GetIngredientsArgumentsType} from "../api/ingredients";
-import {SortingValuesType} from "../types/Sorting";
+import * as ingredientsApi from "../api/ingredients";
+import {SORT_ORDER_ASC, SORT_ORDER_DESC} from "../constants/sorting";
 
 export class IngredientsStore {
     constructor() {
@@ -9,46 +9,20 @@ export class IngredientsStore {
     }
 
     @observable ingredients: Ingredient[] = [];
-    @observable sortingValues: SortingValuesType = null;
-    @observable selectedTag: string | null = null;
 
     @action
     setIngredients = (ingredients: Ingredient[]) => {
         this.ingredients = ingredients;
     }
 
-    @action
-    setSortingValues = (sortingValues: SortingValuesType) => {
-        this.sortingValues = sortingValues;
-    }
-
-    @action
-    setSelectedTag = (selectedTag: string) => {
-        this.selectedTag = selectedTag;
-    }
-
-    getIngredients = () => {
-        const requestData: {[key: string]: string} = {};
-        const {selectedTag, sortingValues} = this;
-        if (selectedTag) {
-            requestData.tags = selectedTag;
-        }
-        if (sortingValues && sortingValues.sortBy) {
-            requestData.sortBy = sortingValues.sortBy;
-            if (sortingValues.sortOrder) {
-                requestData.order = sortingValues.sortOrder;
-            }
-        }
-        console.log(requestData);
-        getIngredients(requestData as GetIngredientsArgumentsType)
+    getIngredients = ({order, sortBy, tags}: {
+        order?: typeof SORT_ORDER_ASC | typeof SORT_ORDER_DESC,
+        sortBy?: string,
+        tags?: string
+    }) => {
+        ingredientsApi.getIngredients({order, sortBy, tags})
             .then(response => {
                 this.setIngredients(response.data);
             })
-    }
-
-    @action
-    addIngredient = (ingredient: Ingredient) => {
-        // post request to store ingredient
-        // add to array
     }
 }
