@@ -12,9 +12,10 @@ import {INGREDIENTS_PAGE_ROUTE} from "../constants/routes";
 interface Props {
     sortBy?: string;
     order?: string;
+    tags?: string;
 }
 
-export const SortingWidget = ({sortBy, order}: Props) => {
+export const SortingWidget = ({sortBy, order, tags}: Props) => {
     const history = useHistory();
     let defaultValue = '';
 
@@ -34,7 +35,8 @@ export const SortingWidget = ({sortBy, order}: Props) => {
                     case SORTING_WIDGET_CALORIES_ASC:
                         history.push(`${INGREDIENTS_PAGE_ROUTE}?${queryString.stringify({
                             sortBy: 'caloriesCount',
-                            order: SORT_ORDER_ASC
+                            order: SORT_ORDER_ASC,
+                            tags,
                         })}`);
                         break;
                     case SORTING_WIDGET_CALORIES_DESC:
