@@ -1,7 +1,5 @@
 import React from "react";
-import {Link} from 'react-router-dom';
 import {Ingredient} from "../types/Ingredient";
-import {INGREDIENTS_PAGE_ROUTE} from "../constants/routes";
 
 type Props = {
     ingredient: Ingredient;
