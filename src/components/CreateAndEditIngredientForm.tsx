@@ -81,10 +81,10 @@ export const CreateAndEditIngredientForm = ({onFormSubmit, isSubmitDisabled}: Pr
                 />
             </div>
             <div>
+                <span className="mr-3">Tags:</span>
                 {tags.map((tag, index) => {
                     return (
                         <div key={tag}>
-                            <span className="mr-3">Tags:</span>
                             <span className="badge badge-secondary mr-1 font-weight-bold">
                                 {tag}
                                 <a style={{color: 'white'}} href="/#" className="btn-link ml-3" onClick={(e) => {
