@@ -16,3 +16,12 @@ export const getIngredients = (params: GetIngredientsArgumentsType): AxiosPromis
         params
     })
 }
+
+export const storeIngredient = ({name, image, caloriesCount, tags}: Omit<Ingredient, 'id'>): AxiosPromise<void> => {
+    return axios.post(`${ENDPOINT}${route}`, {
+        name,
+        image,
+        caloriesCount,
+        tags
+    })
+}

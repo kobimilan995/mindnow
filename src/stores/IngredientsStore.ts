@@ -2,6 +2,7 @@ import {makeObservable, observable, action} from 'mobx';
 import {Ingredient} from "../types/Ingredient";
 import * as ingredientsApi from "../api/ingredients";
 import {SORT_ORDER_ASC, SORT_ORDER_DESC} from "../constants/sorting";
+import {AxiosPromise} from "axios";
 
 export class IngredientsStore {
     constructor() {
@@ -24,5 +25,10 @@ export class IngredientsStore {
             .then(response => {
                 this.setIngredients(response.data);
             })
+    }
+
+    storeIngredient = (ingredient: Omit<Ingredient, 'id'>): AxiosPromise<void> => {
+        console.log('called');
+        return ingredientsApi.storeIngredient(ingredient);
     }
 }

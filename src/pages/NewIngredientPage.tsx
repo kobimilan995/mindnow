@@ -1,22 +1,28 @@
 import React, {useState} from "react";
+import {useHistory} from 'react-router-dom';
+import {observer} from "mobx-react-lite";
+import {useRootStore} from "../contexts/RootStateContext";
+import {CreateAndEditIngredientForm} from "../components/CreateAndEditIngredientForm";
+import {Ingredient} from "../types/Ingredient";
 
-export const NewIngredientPage = () => {
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
+export const NewIngredientPage = observer(() => {
+    const {ingredientsStore} = useRootStore();
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(false);
+    const history = useHistory();
+
+    const onFormSubmit = ({tags, caloriesCount, name, image}: Omit<Ingredient, 'id'>) => {
+        setIsSubmitDisabled(true);
+        ingredientsStore.storeIngredient({
+            tags,
+            caloriesCount,
+            name,
+            image
+        }).then(() => {
+            setIsSubmitDisabled(false);
+            history.goBack();
+        });
+    }
     return (
-        <form className="mt-4">
-            <div className="form-group">
-                <label htmlFor="name-input">Ingredient name</label>
-                <input type="input" className="form-control" id="name-input" placeholder="Enter name"/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="calories-count-input">Calories count</label>
-                <input type="number" className="form-control" id="calories-count-input" placeholder="Enter calories count"/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="image-url-input">Image URL</label>
-                <input type="input" className="form-control" id="image-url-input" placeholder="Enter image url"/>
-            </div>
-            <button type="submit" className="btn btn-primary">Submit</button>
-        </form>
+        <CreateAndEditIngredientForm onFormSubmit={onFormSubmit} isSubmitDisabled={isSubmitDisabled}/>
     );
-}
+})
