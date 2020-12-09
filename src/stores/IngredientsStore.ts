@@ -16,12 +16,12 @@ export class IngredientsStore {
         this.ingredients = ingredients;
     }
 
-    getIngredients = ({order, sortBy, tags}: {
+    getIngredients = (args: {
         order?: typeof SORT_ORDER_ASC | typeof SORT_ORDER_DESC,
         sortBy?: string,
         tags?: string
     }) => {
-        ingredientsApi.getIngredients({order, sortBy, tags})
+        ingredientsApi.getIngredients(args)
             .then(response => {
                 this.setIngredients(response.data);
             })

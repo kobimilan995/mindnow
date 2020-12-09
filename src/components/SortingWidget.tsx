@@ -7,15 +7,15 @@ import {
     SORTING_WIDGET_CALORIES_ASC,
     SORTING_WIDGET_CALORIES_DESC
 } from "../constants/sorting";
-import {INGREDIENTS_PAGE_ROUTE} from "../constants/routes";
 
 interface Props {
     sortBy?: string;
     order?: string;
     tags?: string;
+    baseRoute: string;
 }
 
-export const SortingWidget = ({sortBy, order, tags}: Props) => {
+export const SortingWidget = ({sortBy, order, tags, baseRoute}: Props) => {
     const history = useHistory();
     let defaultValue = '';
 
@@ -33,16 +33,17 @@ export const SortingWidget = ({sortBy, order, tags}: Props) => {
             <select className="form-control form-control-sm ml-4" value={defaultValue} onChange={(event) => {
                 switch (event.target.value) {
                     case SORTING_WIDGET_CALORIES_ASC:
-                        history.push(`${INGREDIENTS_PAGE_ROUTE}?${queryString.stringify({
+                        history.push(`${baseRoute}?${queryString.stringify({
                             sortBy: 'caloriesCount',
                             order: SORT_ORDER_ASC,
                             tags,
                         })}`);
                         break;
                     case SORTING_WIDGET_CALORIES_DESC:
-                        history.push(`${INGREDIENTS_PAGE_ROUTE}?${queryString.stringify({
+                        history.push(`${baseRoute}?${queryString.stringify({
                             sortBy: 'caloriesCount',
-                            order: SORT_ORDER_DESC
+                            order: SORT_ORDER_DESC,
+                            tags,
                         })}`)
                         break;
                     default:

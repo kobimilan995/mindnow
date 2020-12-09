@@ -1,8 +1,13 @@
 import React from 'react';
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 import {Navbar} from "./components";
-import {HomePage, IngredientsPage, NewIngredientPage} from "./pages";
-import {HOME_PAGE_ROUTE, INGREDIENTS_PAGE_ROUTE, NEW_INGREDIENT_PAGE} from "./constants/routes";
+import {HomePage, IngredientsPage, NewIngredientPage, SaladsPage} from "./pages";
+import {
+    HOME_PAGE_ROUTE,
+    INGREDIENTS_PAGE_ROUTE,
+    NEW_INGREDIENT_PAGE_ROUTE,
+    SALADS_PAGE_ROUTE
+} from "./constants/routes";
 
 const App = () => {
     return (
@@ -13,11 +18,14 @@ const App = () => {
                     <Route path={HOME_PAGE_ROUTE} exact>
                         <HomePage/>
                     </Route>
-                    <Route path={`${INGREDIENTS_PAGE_ROUTE}`} exact>
+                    <Route path={INGREDIENTS_PAGE_ROUTE} exact>
                         <IngredientsPage/>
                     </Route>
-                    <Route path={`${NEW_INGREDIENT_PAGE}`} exact>
+                    <Route path={NEW_INGREDIENT_PAGE_ROUTE} exact>
                         <NewIngredientPage/>
+                    </Route>
+                    <Route path={SALADS_PAGE_ROUTE} exact>
+                        <SaladsPage/>
                     </Route>
                 </Switch>
             </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import {HOME_PAGE_ROUTE, INGREDIENTS_PAGE_ROUTE} from "../constants/routes";
+import {HOME_PAGE_ROUTE, INGREDIENTS_PAGE_ROUTE, SALADS_PAGE_ROUTE} from "../constants/routes";
 
 export const Navbar = () => {
     return (
@@ -17,6 +17,9 @@ export const Navbar = () => {
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item active">
                         <Link className="nav-link" href="/#" to={INGREDIENTS_PAGE_ROUTE}>Ingredients</Link>
+                    </li>
+                    <li className="nav-item active">
+                        <Link className="nav-link" href="/#" to={SALADS_PAGE_ROUTE}>Salads</Link>
                     </li>
                 </ul>
             </div>
