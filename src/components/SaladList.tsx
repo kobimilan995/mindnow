@@ -14,15 +14,14 @@ type Props = {
 
 export const SaladList = ({salads, order, sortBy}: Props) => {
     const history = useHistory();
+
     return (
-        <div className="container">
-            <div className="row">
-                {salads.map(salad => {
-                    return <SaladListItem key={salad.id} salad={salad} onTagSelect={(tag) => {
-                        history.push(`${SALADS_PAGE_ROUTE}?${queryString.stringify({order, sortBy, tags: tag})}`);
-                    }} />
-                })}
-            </div>
+        <div className="list-group">
+            {salads.map(salad => {
+                return <SaladListItem key={salad.id} salad={salad} onTagSelect={(tag) => {
+                    history.push(`${SALADS_PAGE_ROUTE}?${queryString.stringify({order, sortBy, tags: tag})}`);
+                }} />
+            })}
         </div>
     );
 }

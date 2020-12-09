@@ -1,21 +1,30 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom';
 import {Salad} from "../types/Salad";
+import {SALAD_DETAILS_ROUTE} from "../constants/routes";
+import {observer} from "mobx-react-lite";
+import {useRootStore} from "../contexts/RootStateContext";
 
 type Props = {
     salad: Salad;
     onTagSelect(tag: string): void;
 }
 
-export const SaladListItem = ({salad, onTagSelect}: Props) => {
+export const SaladListItem = observer(({salad, onTagSelect}: Props) => {
+    const {saladDetailsStore} = useRootStore();
+
+    const history = useHistory();
+
+    const onSaladListItemClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        saladDetailsStore.setSalad(salad);
+        history.push(SALAD_DETAILS_ROUTE(salad.id));
+    }
     return (
-        <a href="/#" className="list-group-item list-group-item-action flex-column align-items-start">
-            <div className="d-flex w-100 justify-content-between">
-                <h5 className="mb-1">{salad.name}</h5>
-                <small>{salad.caloriesCount} calories</small>
-            </div>
+        <div className="list-group-item">
+            <span className="mr-4">{salad.name}</span>
             {salad.tags.length > 0 && (
-                <div className="card-footer mb-2">
-                    <h6>Tags</h6>
+                <span>
                     {salad.tags.map(tag => {
                         return (
                             <button key={tag} className="badge badge-secondary mr-1" onClick={(e) => {
@@ -26,8 +35,9 @@ export const SaladListItem = ({salad, onTagSelect}: Props) => {
                             </button>
                         );
                     })}
-                </div>
+                </span>
             )}
-        </a>
+            <button className="btn btn-primary btn-sm float-right" onClick={onSaladListItemClick}>Show more</button>
+        </div>
     );
-}
+})
