@@ -1,5 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {debounce} from 'lodash';
+import React, {useEffect, useState} from 'react';
 import {observer} from "mobx-react-lite";
 import {useRootStore} from "../contexts/RootStateContext";
 import {useQuery} from "../hooks";
@@ -9,10 +8,9 @@ import {SALADS_PAGE_ROUTE} from "../constants/routes";
 export const SaladsPage = observer(() => {
     const {saladsStore} = useRootStore();
 
-    const {salads} = saladsStore;
+    const {filteredSalads, setSearchQuery, searchQuery} = saladsStore;
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [searchQuery, setSearchQuery] = useState<string>('');
 
     const query = useQuery();
     useEffect(() => {
@@ -24,15 +22,18 @@ export const SaladsPage = observer(() => {
             })
     }, [query.tags, query.order, query.sortBy]);
 
-    const onSearchQueryChange = useMemo(() => debounce((name: string) => {
-        setIsLoading(true);
-        const {order, sortBy, tags} = query;
-        saladsStore.getSalads({order, sortBy, tags, name})
-            .then(() => {
-                setIsLoading(false);
-            });
-    }, 500), [query.tags, query.order, query.sortBy]);
+    // const onSearchQueryChange = useMemo(() => debounce((name: string) => {
+    //     setIsLoading(true);
+    //     const {order, sortBy, tags} = query;
+    //     saladsStore.getSalads({order, sortBy, tags, name})
+    //         .then(() => {
+    //             setIsLoading(false);
+    //         });
+    // }, 500), [query.tags, query.order, query.sortBy]);
     const {order, sortBy, tags} = query;
+    const onSearchQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+    }
 
     return (
         <div>
@@ -45,10 +46,7 @@ export const SaladsPage = observer(() => {
                     </div>
                     <input
                         value={searchQuery}
-                        onChange={(e) => {
-                            setSearchQuery(e.target.value);
-                            onSearchQueryChange(e.target.value);
-                        }}
+                        onChange={onSearchQueryChange}
                         type="text"
                         className="form-control"
                         aria-label="Small"
@@ -60,7 +58,7 @@ export const SaladsPage = observer(() => {
             {isLoading ? (
                 <LoadingSpinner/>
             ) : (
-                <SaladList salads={salads} order={order} sortBy={sortBy}/>
+                <SaladList salads={filteredSalads} order={order} sortBy={sortBy}/>
             )}
 
         </div>
