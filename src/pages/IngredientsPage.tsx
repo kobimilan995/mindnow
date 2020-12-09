@@ -1,11 +1,10 @@
 import React, {useEffect} from 'react';
-import {IngredientList} from "../components";
+import {IngredientList, SortingWidget} from "../components";
 import {SORT_ORDER_ASC, SORT_ORDER_DESC} from "../constants/sorting";
 import queryString from "query-string";
-import {Link, useHistory, useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {useRootStore} from "../contexts/RootStateContext";
 import {observer} from "mobx-react-lite";
-import {SortingWidget} from "../components/SortingWidget";
 import {NEW_INGREDIENT_PAGE} from "../constants/routes";
 
 

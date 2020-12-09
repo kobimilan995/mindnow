@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import {useHistory} from 'react-router-dom';
 import {observer} from "mobx-react-lite";
 import {useRootStore} from "../contexts/RootStateContext";
-import {CreateAndEditIngredientForm} from "../components/CreateAndEditIngredientForm";
 import {Ingredient} from "../types/Ingredient";
+import {CreateAndEditIngredientForm} from "../components";
 
 export const NewIngredientPage = observer(() => {
     const {ingredientsStore} = useRootStore();
