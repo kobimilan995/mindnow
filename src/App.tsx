@@ -1,18 +1,28 @@
 import React from 'react';
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 import {Navbar} from "./components";
-import {HomePage, IngredientsPage, NewIngredientPage, SaladDetailsPage, SaladsPage} from "./pages";
 import {
-    HOME_PAGE_ROUTE,
+    EditIngredientPage,
+    HomePage,
+    IngredientDetailsPage,
+    IngredientsPage,
+    NewIngredientPage,
+    SaladDetailsPage,
+    SaladsPage
+} from "./pages";
+import {
+    EDIT_INGREDIENT_PAGE,
+    HOME_PAGE_ROUTE, INGREDIENT_DETAILS_ROUTE,
     INGREDIENTS_PAGE_ROUTE,
     NEW_INGREDIENT_PAGE_ROUTE, SALAD_DETAILS_ROUTE,
     SALADS_PAGE_ROUTE
 } from "./constants/routes";
+import {Container} from "@material-ui/core";
 
 const App = () => {
     return (
         <BrowserRouter>
-            <div className="container">
+            <Container maxWidth="lg">
                 <Navbar/>
                 <Switch>
                     <Route path={HOME_PAGE_ROUTE} exact>
@@ -30,8 +40,14 @@ const App = () => {
                     <Route path={SALAD_DETAILS_ROUTE(':id')} exact>
                         <SaladDetailsPage/>
                     </Route>
+                    <Route path={INGREDIENT_DETAILS_ROUTE(':id')} exact>
+                        <IngredientDetailsPage/>
+                    </Route>
+                    <Route path={EDIT_INGREDIENT_PAGE(':id')} exact>
+                        <EditIngredientPage/>
+                    </Route>
                 </Switch>
-            </div>
+            </Container>
         </BrowserRouter>
     );
 }

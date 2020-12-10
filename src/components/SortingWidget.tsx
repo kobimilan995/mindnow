@@ -7,6 +7,19 @@ import {
     SORTING_WIDGET_CALORIES_ASC,
     SORTING_WIDGET_CALORIES_DESC
 } from "../constants/sorting";
+import {Select, MenuItem, createStyles, makeStyles, Theme} from "@material-ui/core";
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        formControl: {
+            margin: theme.spacing(1),
+            minWidth: 120,
+        },
+        selectEmpty: {
+            marginTop: theme.spacing(2),
+        },
+    }),
+);
 
 interface Props {
     sortBy?: string;
@@ -16,6 +29,7 @@ interface Props {
 }
 
 export const SortingWidget = ({sortBy, order, tags, baseRoute}: Props) => {
+    const classes = useStyles();
     const history = useHistory();
     let defaultValue = '';
 
@@ -27,34 +41,40 @@ export const SortingWidget = ({sortBy, order, tags, baseRoute}: Props) => {
         defaultValue = SORTING_WIDGET_CALORIES_DESC;
     }
 
+    const onChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
+        switch (event.target.value) {
+            case SORTING_WIDGET_CALORIES_ASC:
+                history.push(`${baseRoute}?${queryString.stringify({
+                    sortBy: 'caloriesCount',
+                    order: SORT_ORDER_ASC,
+                    tags,
+                })}`);
+                break;
+            case SORTING_WIDGET_CALORIES_DESC:
+                history.push(`${baseRoute}?${queryString.stringify({
+                    sortBy: 'caloriesCount',
+                    order: SORT_ORDER_DESC,
+                    tags,
+                })}`)
+                break;
+            default:
+        }
+    }
+
     return (
-        <div className="form mb-4 mt-4 w-50 d-flex">
-            <h5 className="mb-0 align-self-center label label-default">Sort:</h5>
-            <select className="form-control form-control-sm ml-4" value={defaultValue} onChange={(event) => {
-                switch (event.target.value) {
-                    case SORTING_WIDGET_CALORIES_ASC:
-                        history.push(`${baseRoute}?${queryString.stringify({
-                            sortBy: 'caloriesCount',
-                            order: SORT_ORDER_ASC,
-                            tags,
-                        })}`);
-                        break;
-                    case SORTING_WIDGET_CALORIES_DESC:
-                        history.push(`${baseRoute}?${queryString.stringify({
-                            sortBy: 'caloriesCount',
-                            order: SORT_ORDER_DESC,
-                            tags,
-                        })}`)
-                        break;
-                    default:
-                }
-            }}>
-                <option value="" disabled>Select your option</option>
-                <option value={SORTING_WIDGET_CALORIES_ASC}>By calories count (Low to High)
-                </option>
-                <option value={SORTING_WIDGET_CALORIES_DESC}>By calories count (High to Low)
-                </option>
-            </select>
-        </div>
+        <Select
+            labelId="demo-simple-select-placeholder-label-label"
+            id="demo-simple-select-placeholder-label"
+            value={defaultValue}
+            onChange={onChange}
+            displayEmpty
+            className={classes.selectEmpty}
+        >
+            <MenuItem value="" disabled>
+                <em>Choose sorting order</em>
+            </MenuItem>
+            <MenuItem value={SORTING_WIDGET_CALORIES_ASC}>By calories count (Low to High)</MenuItem>
+            <MenuItem value={SORTING_WIDGET_CALORIES_DESC}>By calories count (High to Low)</MenuItem>
+        </Select>
     );
 }

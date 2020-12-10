@@ -22,7 +22,9 @@ export class SaladsStore {
     }
 
     @computed get filteredSalads() {
-        return this.salads.filter(salad => (salad.name.toLocaleLowerCase()).includes(this.searchQuery.toLocaleLowerCase()))
+        return this.salads.filter(salad => {
+            return (salad.name.toLocaleLowerCase()).includes(this.searchQuery.toLocaleLowerCase());
+        })
     }
 
     getSalads = (args: {

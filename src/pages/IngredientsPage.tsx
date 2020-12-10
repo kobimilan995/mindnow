@@ -1,15 +1,17 @@
 import React, {useEffect} from 'react';
+import {useHistory} from 'react-router-dom';
 import {IngredientList, SortingWidget} from "../components";
-import {Link} from "react-router-dom";
 import {useRootStore} from "../contexts/RootStateContext";
 import {observer} from "mobx-react-lite";
-import {INGREDIENTS_PAGE_ROUTE, NEW_INGREDIENT_PAGE_ROUTE} from "../constants/routes";
+import {INGREDIENT_DETAILS_ROUTE, INGREDIENTS_PAGE_ROUTE, NEW_INGREDIENT_PAGE_ROUTE} from "../constants/routes";
 import {useQuery} from "../hooks";
+import {Box, Button, Grid} from "@material-ui/core";
 
 export const IngredientsPage = observer(() => {
-    const {ingredientsStore} = useRootStore();
+    const {ingredientsStore, ingredientDetailsStore} = useRootStore();
     const {getIngredients, ingredients} = ingredientsStore;
     const query = useQuery();
+    const history = useHistory();
     useEffect(() => {
         const {order, sortBy, tags} = query;
         getIngredients({order, sortBy, tags});
@@ -18,11 +20,33 @@ export const IngredientsPage = observer(() => {
 
     return (
         <div>
-            <div className="d-flex row align-items-center justify-content-between">
-                <SortingWidget baseRoute={INGREDIENTS_PAGE_ROUTE} order={order} sortBy={sortBy} tags={tags}/>
-                <Link to={NEW_INGREDIENT_PAGE_ROUTE} className="btn btn-primary mt-4 mb-4">New Ingredient</Link>
-            </div>
-            <IngredientList ingredients={ingredients} sortBy={sortBy} order={order}/>
+            <SortingWidget
+                baseRoute={INGREDIENTS_PAGE_ROUTE}
+                order={order}
+                sortBy={sortBy}
+                tags={tags}
+            />
+            <Box component="span" ml={2}>
+                <Button
+                    size="small"
+                    onClick={() => history.push(NEW_INGREDIENT_PAGE_ROUTE)}
+                    variant="contained"
+                    color="primary"
+                >
+                    Create new ingredient
+                </Button>
+            </Box>
+            <Box mt={10}>
+                <IngredientList
+                    onIngredientClick={(ingredient) => {
+                        ingredientDetailsStore.setIngredient(ingredient);
+                        history.push(INGREDIENT_DETAILS_ROUTE(ingredient.id));
+                    }}
+                    ingredients={ingredients}
+                    sortBy={sortBy}
+                    order={order}
+                />
+            </Box>
         </div>
     );
 })

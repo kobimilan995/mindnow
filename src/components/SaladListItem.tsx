@@ -4,6 +4,7 @@ import {Salad} from "../types/Salad";
 import {SALAD_DETAILS_ROUTE} from "../constants/routes";
 import {observer} from "mobx-react-lite";
 import {useRootStore} from "../contexts/RootStateContext";
+import {Box, Button, Chip, Grid, Typography} from "@material-ui/core";
 
 type Props = {
     salad: Salad;
@@ -20,24 +21,18 @@ export const SaladListItem = observer(({salad, onTagSelect}: Props) => {
         saladDetailsStore.setSalad(salad);
         history.push(SALAD_DETAILS_ROUTE(salad.id));
     }
+
     return (
-        <div className="list-group-item">
-            <span className="mr-4">{salad.name}</span>
-            {salad.tags.length > 0 && (
-                <span>
-                    {salad.tags.map(tag => {
-                        return (
-                            <button key={tag} className="badge badge-secondary mr-1" onClick={(e) => {
-                                e.preventDefault();
-                                onTagSelect(tag);
-                            }}>
-                                {tag}
-                            </button>
-                        );
-                    })}
-                </span>
-            )}
-            <button className="btn btn-primary btn-sm float-right" onClick={onSaladListItemClick}>Show more</button>
-        </div>
+        <Box border={1} borderColor="#E1E1E1" p={3} mb={1} borderRadius={3}>
+            <Grid container spacing={2} alignItems="center" justify="space-between">
+                <Grid item>
+                    <Typography variant="h6">{salad.name}</Typography>
+                    <Typography variant="subtitle2">{salad.caloriesCount} calories</Typography>
+                </Grid>
+                <Grid item>
+                    <Button color="primary" size="small" variant="contained" onClick={onSaladListItemClick}>View details</Button>
+                </Grid>
+            </Grid>
+        </Box>
     );
 })

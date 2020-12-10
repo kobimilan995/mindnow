@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {RootStateProvider} from "./contexts/RootStateContext";
 
 ReactDOM.render(
-    <React.StrictMode>
-        <RootStateProvider>
-            <App/>
-        </RootStateProvider>
-    </React.StrictMode>,
+    <RootStateProvider>
+        <App/>
+    </RootStateProvider>,
     document.getElementById('root')
 );
 

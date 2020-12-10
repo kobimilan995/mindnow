@@ -12,7 +12,6 @@ export type GetSaladsArgumentsType = {
 }
 
 export const getSalads = (params: GetSaladsArgumentsType): AxiosPromise<Salad[]> => {
-    console.log({params});
     return axios.get(`${ENDPOINT}${route}`, {
         params
     })

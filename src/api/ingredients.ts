@@ -25,3 +25,13 @@ export const storeIngredient = ({name, image, caloriesCount, tags}: Omit<Ingredi
         tags
     })
 }
+
+export const getIngredient = ({id}: { id: string }): AxiosPromise<Ingredient> => {
+    return axios.get(`${ENDPOINT}${route}/${id}`)
+}
+export const updateIngredient = ({id, ingredient}: { id: string, ingredient: Omit<Ingredient, 'id'> }): AxiosPromise<Ingredient> => {
+    return axios.put(`${ENDPOINT}${route}/${id}`, ingredient);
+}
+export const deleteIngredient = ({id}: { id: string }): AxiosPromise<void> => {
+    return axios.delete(`${ENDPOINT}${route}/${id}`)
+}

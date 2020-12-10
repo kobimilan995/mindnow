@@ -28,7 +28,6 @@ export class IngredientsStore {
     }
 
     storeIngredient = (ingredient: Omit<Ingredient, 'id'>): AxiosPromise<void> => {
-        console.log('called');
         return ingredientsApi.storeIngredient(ingredient);
     }
 }

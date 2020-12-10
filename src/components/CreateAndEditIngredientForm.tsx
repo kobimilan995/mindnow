@@ -1,16 +1,29 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Ingredient} from "../types/Ingredient";
+import {Box, Button, Chip, createStyles, FormControl, makeStyles, TextField, Theme} from '@material-ui/core';
+import {Alert} from '@material-ui/lab';
+
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        formControl: {
+            margin: theme.spacing(1),
+            minWidth: 400,
+        },
+    }),
+);
 
 type Props = {
     onFormSubmit(ingredient: Omit<Ingredient, 'id'>): void;
     isSubmitDisabled: boolean;
+    ingredient?: Ingredient;
+    showSuccessAlert?: boolean;
 }
 
-export const CreateAndEditIngredientForm = ({onFormSubmit, isSubmitDisabled}: Props) => {
-
+export const CreateAndEditIngredientForm = ({onFormSubmit, isSubmitDisabled, ingredient, showSuccessAlert = false}: Props) => {
     const [imageUrl, setImageUrl] = useState<string>('');
     const [name, setName] = useState<string>('');
-    const [caloriesCount, setCaloriesCount] = useState<number>(0);
+    const [caloriesCount, setCaloriesCount] = useState<number | ''>('');
     const [tags, setTags] = useState<string[]>([]);
     const [currentTag, setCurrentTag] = useState<string>('');
 
@@ -20,8 +33,16 @@ export const CreateAndEditIngredientForm = ({onFormSubmit, isSubmitDisabled}: Pr
         setTags(tagsCopy);
     }
 
-    // @ts-ignore
-    const onKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
+    useEffect(() => {
+        if (ingredient) {
+            setName(ingredient.name);
+            setCaloriesCount(ingredient.caloriesCount);
+            setTags(ingredient.tags);
+            setImageUrl(ingredient.image);
+        }
+    }, [])
+
+    const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             setTags([...tags, currentTag]);
             setCurrentTag('');
@@ -32,87 +53,89 @@ export const CreateAndEditIngredientForm = ({onFormSubmit, isSubmitDisabled}: Pr
 
     const onSubmit = (e: any) => {
         e.preventDefault();
-        onFormSubmit({
-            image: imageUrl,
-            name,
-            caloriesCount,
-            tags
-        });
+        if (caloriesCount) {
+            onFormSubmit({
+                image: imageUrl,
+                name,
+                caloriesCount,
+                tags
+            });
+        }
+    }
+    const classes = useStyles();
+
+    const onCaloriesCountChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        try {
+            if (e.target.value) {
+                if (parseInt(e.target.value, 10) >= 0) {
+                    setCaloriesCount(parseInt(e.target.value, 10));
+                }
+            } else {
+                setCaloriesCount('');
+            }
+        } catch (e) {
+            console.error('Parsing failed. Moving on...');
+        }
     }
     return (
-        <div className="mt-4">
-            <div className="form-group">
-                <label htmlFor="name-input">Ingredient name</label>
-                <input
-                    value={name}
-                    onChange={(e) => {
-                        setName(e.target.value);
-                    }}
-                    type="input"
-                    className="form-control"
-                    id="name-input"
-                    placeholder="Enter name"
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="calories-count-input">Calories count</label>
-                <input
-                    value={caloriesCount}
-                    onChange={(e) => {
-                        setCaloriesCount(parseInt(e.target.value, 10));
-                    }}
-                    type="number"
-                    className="form-control"
-                    id="calories-count-input"
-                    placeholder="Enter calories count"
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="image-url-input">Image URL</label>
-                <input
-                    value={imageUrl}
-                    onChange={(e) => {
-                        setImageUrl(e.target.value);
-                    }}
-                    type="input"
-                    className="form-control"
-                    id="image-url-input"
-                    placeholder="Enter image url"
-                />
-            </div>
-            <div>
-                <span className="mr-3">Tags:</span>
-                {tags.map((tag, index) => {
-                    return (
-                        <div key={tag}>
-                            <span className="badge badge-secondary mr-1 font-weight-bold">
-                                {tag}
-                                <a style={{color: 'white'}} href="/#" className="btn-link ml-3" onClick={(e) => {
-                                    e.preventDefault();
+        <Box display="flex" mt={5}>
+            <Box m="auto">
+                <div>
+                    <FormControl className={classes.formControl}>
+                        <TextField disabled={isSubmitDisabled} value={name} onChange={(e) => setName(e.target.value)}
+                                   label="Ingredient name"/>
+                    </FormControl>
+                </div>
+                <div>
+                    <FormControl className={classes.formControl}>
+                        <TextField disabled={isSubmitDisabled} value={caloriesCount} onChange={onCaloriesCountChange}
+                                   type="number" label="Calories count"/>
+                    </FormControl>
+                </div>
+                <div>
+                    <FormControl className={classes.formControl}>
+                        <TextField disabled={isSubmitDisabled} value={imageUrl}
+                                   onChange={(e) => setImageUrl(e.target.value)} label="Image URL"/>
+                    </FormControl>
+                </div>
+                <div>
+                    <FormControl className={classes.formControl}>
+                        <TextField
+                            disabled={isSubmitDisabled}
+                            value={currentTag}
+                            onChange={(e) => setCurrentTag(e.target.value)}
+                            id="standard-basic"
+                            label="Enter tag name and press enter"
+                            onKeyUp={onKeyUp}
+                        />
+                    </FormControl>
+                </div>
+                <Box display="flex" flexWrap="wrap" maxWidth={400}>
+                    {tags.map((tag, index) => {
+                        return (
+                            <Box key={tag} component="span" m={0.5}>
+                                <Chip disabled={isSubmitDisabled} label={tag} onDelete={() => {
                                     removeTag(index);
-                                }}>X</a>
-                            </span>
-                        </div>
-                    )
-                })}
-            </div>
-            <div className="form-group">
-                <label htmlFor="tags-input">Enter tag name and press enter (you can add more then 1)</label>
-                <input
-                    value={currentTag}
-                    onChange={(e) => {
-                        setCurrentTag(e.target.value);
-                    }}
-                    onKeyUp={onKeyUp}
-                    type="input"
-                    className="form-control"
-                    id="tags-input"
-                    placeholder="Enter tag name"
-                />
-            </div>
-            <button disabled={isSubmitDisabled} type="submit" onClick={onSubmit}
-                    className="btn btn-primary">Submit
-            </button>
-        </div>
+                                }}/>
+                            </Box>
+                        );
+                    })}
+                </Box>
+
+                {showSuccessAlert && (
+                    <Box mt={3}>
+                        <Alert severity="success">Ingredient updated successfully!</Alert>
+                    </Box>
+                )}
+
+                <Box display="flex">
+                    <Box m="auto" mt={3}>
+                        <Button disabled={isSubmitDisabled} onClick={onSubmit} variant="contained" color="primary">
+                            Submit
+                        </Button>
+                    </Box>
+                </Box>
+            </Box>
+        </Box>
     );
 }
