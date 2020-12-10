@@ -21,9 +21,10 @@ export class IngredientsStore {
         sortBy?: string,
         tags?: string
     }) => {
-        ingredientsApi.getIngredients(args)
+        return ingredientsApi.getIngredients(args)
             .then(response => {
                 this.setIngredients(response.data);
+                return Promise.resolve();
             })
     }
 

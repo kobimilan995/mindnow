@@ -1,13 +1,15 @@
-import {Ingredient} from "../types/Ingredient";
 import React from "react";
 import {Box, Button, Chip, Popover} from "@material-ui/core";
 
 type Props = {
-    ingredient: Ingredient;
+    id: string;
     onTagSelect(tag: string): void;
+    tags: string[];
+    textColor?: string;
+    buttonVariant?: 'text' | 'outlined' | 'contained'
 }
 
-export const IngredientTagsPopover = ({ingredient, onTagSelect}: Props) => {
+export const TagsPopover = ({id, onTagSelect, tags, textColor = "white", buttonVariant = 'outlined'}: Props) => {
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -19,20 +21,20 @@ export const IngredientTagsPopover = ({ingredient, onTagSelect}: Props) => {
     };
 
     const open = Boolean(anchorEl);
-    const id = open ? ingredient.id : undefined;
 
     return (
-        <div>
+        <Box mt={1} mr={1}>
             <Button
-                aria-describedby={ingredient.id}
-                className="pr-2"
-                style={{color: "white"}}
+                aria-describedby={id}
+                size="small"
+                variant={buttonVariant}
+                style={{color: textColor}}
                 onMouseDown={(e) => {
                     e.stopPropagation();
                     handleClick(e);
                 }}
             >
-                {ingredient.tags.length} tags
+                {tags.length} {tags.length === 1 ? 'tag' : 'tags'}
             </Button>
             <Popover
                 id={id}
@@ -49,9 +51,9 @@ export const IngredientTagsPopover = ({ingredient, onTagSelect}: Props) => {
                 }}
             >
                 <Box component="div" m={1}>
-                    {ingredient.tags.map(tag => {
+                    {tags.map(tag => {
                         return (
-                            <Box component="div" m={1} key={`${ingredient.id}${tag}`}>
+                            <Box component="div" m={1} key={`${id}${tag}`}>
                                 <Chip label={tag} component="a" href="/#" clickable
                                       onClick={(e: React.MouseEvent) => {
                                           e.stopPropagation();
@@ -64,6 +66,6 @@ export const IngredientTagsPopover = ({ingredient, onTagSelect}: Props) => {
                     })}
                 </Box>
             </Popover>
-        </div>
+        </Box>
     );
 }

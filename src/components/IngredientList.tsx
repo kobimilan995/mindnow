@@ -2,13 +2,13 @@ import React from 'react';
 import queryString from 'query-string';
 import {useHistory} from 'react-router-dom';
 import {Theme, createStyles, makeStyles} from '@material-ui/core/styles';
-import {Button, GridList} from '@material-ui/core';
+import {Box, Button, GridList, Typography} from '@material-ui/core';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import {Ingredient} from "../types/Ingredient";
 import {SORT_ORDER_ASC, SORT_ORDER_DESC} from "../constants/sorting";
-import {INGREDIENT_DETAILS_ROUTE, INGREDIENTS_PAGE_ROUTE} from "../constants/routes";
-import {IngredientTagsPopover} from "./IngredientTagsPopover";
+import {INGREDIENTS_PAGE_ROUTE} from "../constants/routes";
+import {TagsPopover} from "./TagsPopover";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -45,6 +45,14 @@ export const IngredientList = ({ingredients, order, sortBy, onIngredientClick}: 
     const classes = useStyles();
     const history = useHistory();
 
+    if (ingredients.length === 0) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center">
+                <Typography variant="h5">No ingredients found. Feel free to create some!</Typography>
+            </Box>
+        );
+    }
+
     return (
         <div className={classes.root}>
             <GridList cols={2} cellHeight={240} className={classes.gridList}>
@@ -54,7 +62,8 @@ export const IngredientList = ({ingredients, order, sortBy, onIngredientClick}: 
                         <GridListTileBar
                             title={
                                 <Button
-                                    style={{color: 'white'}}
+                                    variant="text"
+                                    style={{color: 'white', padding: 0}}
                                     onClick={() => {
                                         onIngredientClick(ingredient);
                                     }}>
@@ -63,12 +72,12 @@ export const IngredientList = ({ingredients, order, sortBy, onIngredientClick}: 
                             }
                             subtitle={
                                 <div>
-                                    <span>Calories count: {ingredient.caloriesCount}</span>
+                                    <span>Calories: {ingredient.caloriesCount}</span>
                                 </div>
                             }
                             actionIcon={
                                 ingredient.tags.length > 0 &&
-                                <IngredientTagsPopover ingredient={ingredient} onTagSelect={(tag) => {
+                                <TagsPopover tags={ingredient.tags} id={ingredient.id} onTagSelect={(tag) => {
                                     history.push(`${INGREDIENTS_PAGE_ROUTE}?${queryString.stringify({
                                         order,
                                         sortBy,

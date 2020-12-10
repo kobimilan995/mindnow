@@ -5,7 +5,7 @@ import {SALADS_PAGE_ROUTE} from "../constants/routes";
 import queryString from "query-string";
 import {SaladListItem} from "./SaladListItem";
 import {SORT_ORDER_ASC, SORT_ORDER_DESC} from "../constants/sorting";
-import {Grid} from "@material-ui/core";
+import {Box, Grid, Typography} from "@material-ui/core";
 
 type Props = {
     salads: Salad[];
@@ -17,8 +17,15 @@ type Props = {
 export const SaladList = ({salads, order, sortBy}: Props) => {
     const history = useHistory();
 
-    return (
+    if (salads.length === 0) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center">
+                <Typography variant="h5">No salads found. Feel free to create some!</Typography>
+            </Box>
+        );
+    }
 
+    return (
         <Grid item md={8} xs={12}>
             {salads.map(salad => {
                 return (

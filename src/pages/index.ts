@@ -5,3 +5,4 @@ export {SaladsPage} from './SaladsPage';
 export {SaladDetailsPage} from './SaladDetailsPage';
 export {IngredientDetailsPage} from './IngredientDetailsPage';
 export {EditIngredientPage} from './EditIngredientPage';
+export {NewSaladPage} from './NewSaladPage';

@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
+import {useHistory} from 'react-router-dom';
 import {observer} from "mobx-react-lite";
 import {useRootStore} from "../contexts/RootStateContext";
 import {useQuery} from "../hooks";
 import {SortingWidget, SaladList, LoadingSpinner} from "../components";
-import {SALADS_PAGE_ROUTE} from "../constants/routes";
-import {Box, createStyles, Grid, makeStyles, TextField, Theme} from "@material-ui/core";
+import {NEW_SALAD_PAGE, SALADS_PAGE_ROUTE} from "../constants/routes";
+import {Box, Button, createStyles, Grid, makeStyles, TextField, Theme} from "@material-ui/core";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -24,6 +25,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const SaladsPage = observer(() => {
     const {saladsStore} = useRootStore();
+
+    const history = useHistory();
 
     const {filteredSalads, setSearchQuery, searchQuery} = saladsStore;
 
@@ -53,14 +56,20 @@ export const SaladsPage = observer(() => {
                     <Grid item md={4} xs={12}>
                         <Box display="flex" flexDirection="column" alignItems="center">
                             <SortingWidget baseRoute={SALADS_PAGE_ROUTE} order={order} sortBy={sortBy} tags={tags}/>
-                            <Box mt={4}>
+                            <Box mt={2}>
                                 <TextField
+                                    size="small"
                                     value={searchQuery}
                                     onChange={onSearchQueryChange}
                                     id="outlined-basic"
                                     label="Filter salads"
                                     variant="outlined"
                                 />
+                            </Box>
+                            <Box mt={2}>
+                                <Button variant="contained" color="primary" onClick={() => {
+                                    history.push(NEW_SALAD_PAGE);
+                                }}>Create new salad</Button>
                             </Box>
                         </Box>
                     </Grid>
@@ -73,32 +82,6 @@ export const SaladsPage = observer(() => {
                     )}
                 </Grid>
             </Box>
-        </div>
-    );
-
-    return (
-        <div>
-            <div>
-                <SortingWidget baseRoute={SALADS_PAGE_ROUTE} order={order} sortBy={sortBy} tags={tags}/>
-                <div>
-                    <div>
-                        <span id="inputGroup-sizing-sm">Search query</span>
-                    </div>
-                    <input
-                        value={searchQuery}
-                        onChange={onSearchQueryChange}
-                        type="text"
-                        aria-label="Small"
-                        aria-describedby="inputGroup-sizing-sm"
-                    />
-                </div>
-            </div>
-            {isLoading ? (
-                <LoadingSpinner/>
-            ) : (
-                <SaladList salads={filteredSalads} order={order} sortBy={sortBy}/>
-            )}
-
         </div>
     );
 })

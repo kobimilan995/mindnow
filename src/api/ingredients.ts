@@ -1,4 +1,5 @@
 import axios, {AxiosPromise} from 'axios';
+import qs from 'qs';
 import {ENDPOINT} from "../constants/api";
 import {Ingredient} from "../types/Ingredient";
 import {SORT_ORDER_ASC, SORT_ORDER_DESC} from "../constants/sorting";
@@ -9,11 +10,19 @@ export type GetIngredientsArgumentsType = {
     tags?: string;
     sortBy?: string;
     order?: typeof SORT_ORDER_ASC | typeof SORT_ORDER_DESC;
+    id?: string[]
 }
 
 export const getIngredients = (params: GetIngredientsArgumentsType): AxiosPromise<Ingredient[]> => {
-    return axios.get(`${ENDPOINT}${route}`, {
-        params
+    let ingredientsEndpoint = `${ENDPOINT}${route}`;
+    if (params.id) {
+        ingredientsEndpoint = `${ingredientsEndpoint}?id=[${params.id.join(',')}]`
+    }
+    return axios.get(ingredientsEndpoint, {
+        params,
+        paramsSerializer: params => {
+            return qs.stringify(params)
+        }
     })
 }
 

@@ -8,13 +8,14 @@ import {
     IngredientsPage,
     NewIngredientPage,
     SaladDetailsPage,
-    SaladsPage
+    SaladsPage,
+    NewSaladPage
 } from "./pages";
 import {
     EDIT_INGREDIENT_PAGE,
     HOME_PAGE_ROUTE, INGREDIENT_DETAILS_ROUTE,
     INGREDIENTS_PAGE_ROUTE,
-    NEW_INGREDIENT_PAGE_ROUTE, SALAD_DETAILS_ROUTE,
+    NEW_INGREDIENT_PAGE_ROUTE, NEW_SALAD_PAGE, SALAD_DETAILS_ROUTE,
     SALADS_PAGE_ROUTE
 } from "./constants/routes";
 import {Container} from "@material-ui/core";
@@ -36,6 +37,9 @@ const App = () => {
                     </Route>
                     <Route path={SALADS_PAGE_ROUTE} exact>
                         <SaladsPage/>
+                    </Route>
+                    <Route path={NEW_SALAD_PAGE} exact>
+                        <NewSaladPage/>
                     </Route>
                     <Route path={SALAD_DETAILS_ROUTE(':id')} exact>
                         <SaladDetailsPage/>

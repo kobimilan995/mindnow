@@ -5,3 +5,5 @@ export {CreateAndEditIngredientForm} from './CreateAndEditIngredientForm';
 export {SaladList} from './SaladList';
 export {LoadingSpinner} from './LoadingSpinner';
 export {ConfirmationDialog} from './ConfirmationDialog';
+export {TagsPopover} from './TagsPopover';
+export {IngredientsPicker} from './IngredientsPicker';
