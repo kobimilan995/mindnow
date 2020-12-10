@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const NewSaladPage = observer(() => {
-    const {createSaladStore} = useRootStore();
+    const {createSaladStore, saladDetailsStore} = useRootStore();
     const {
         getIngredients,
         filteredIngredients,
@@ -90,6 +90,7 @@ export const NewSaladPage = observer(() => {
             name: saladName
         }).then((response) => {
             setIsLoading(false);
+            saladDetailsStore.setSalad(response.data);
             history.replace(SALAD_DETAILS_ROUTE(response.data.id));
         })
     }
