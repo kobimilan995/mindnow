@@ -65,7 +65,9 @@ export const SaladsPage = observer(() => {
                         </Box>
                     </Grid>
                     {isLoading ? (
-                        <LoadingSpinner/>
+                        <Grid item md={8} xs={12}>
+                            <LoadingSpinner/>
+                        </Grid>
                     ) : (
                         <SaladList salads={filteredSalads} order={order} sortBy={sortBy}/>
                     )}

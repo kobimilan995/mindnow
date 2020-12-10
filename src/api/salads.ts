@@ -16,6 +16,10 @@ export const getSalads = (params: GetSaladsArgumentsType): AxiosPromise<Salad[]>
         params
     })
 }
+
+export const getSalad = ({id}: {id: string}): AxiosPromise<Salad> => {
+    return axios.get(`${ENDPOINT}${route}/${id}`)
+}
 //
 // export const storeIngredient = ({name, image, caloriesCount, tags}: Omit<Ingredient, 'id'>): AxiosPromise<void> => {
 //     return axios.post(`${ENDPOINT}${route}`, {

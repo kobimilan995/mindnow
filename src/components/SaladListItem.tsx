@@ -4,7 +4,7 @@ import {Salad} from "../types/Salad";
 import {SALAD_DETAILS_ROUTE} from "../constants/routes";
 import {observer} from "mobx-react-lite";
 import {useRootStore} from "../contexts/RootStateContext";
-import {Box, Button, Chip, Grid, Typography} from "@material-ui/core";
+import {Box, Button, Grid, Typography} from "@material-ui/core";
 
 type Props = {
     salad: Salad;
