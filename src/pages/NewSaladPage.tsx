@@ -257,7 +257,7 @@ export const NewSaladPage = observer(() => {
                         </>
                     )}
                     <Box mt={2}>
-                        <Button disabled={isLoading} onClick={onSubmit} variant="contained" fullWidth color="primary">Submit</Button>
+                        <Button disabled={isLoading || !saladName} onClick={onSubmit} variant="contained" fullWidth color="primary">Submit</Button>
                     </Box>
                 </Grid>
             </Grid>

@@ -130,7 +130,7 @@ export const CreateAndEditIngredientForm = ({onFormSubmit, isSubmitDisabled, ing
 
                 <Box display="flex">
                     <Box m="auto" mt={3}>
-                        <Button disabled={isSubmitDisabled} onClick={onSubmit} variant="contained" color="primary">
+                        <Button disabled={isSubmitDisabled || !name || !caloriesCount || !imageUrl} onClick={onSubmit} variant="contained" color="primary">
                             Submit
                         </Button>
                     </Box>
